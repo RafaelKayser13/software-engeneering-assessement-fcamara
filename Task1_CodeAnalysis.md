@@ -56,4 +56,3 @@ I noticed a few more things, but they are reasonable shortcuts for a starter pro
 - [HangfireSetup.cs](src/Demo.Infrastructure/HangfireSetup.cs) uses `UseMemoryStorage()`, so job state is lost on restart. The README says this on purpose; it avoids making evaluators set up extra infrastructure.
 
 - Swagger is only enabled in Development. That is the default `dotnet new webapi` template behavior and fine for a project that only runs locally.
-

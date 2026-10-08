@@ -1,0 +1,47 @@
+Summary
+  Generated on: 08/10/2026 - 15:39:57
+  Coverage date: 08/10/2026 - 15:39:07 - 08/10/2026 - 15:39:10
+  Parser: MultiReport (3x Cobertura)
+  Assemblies: 4
+  Classes: 19
+  Files: 19
+  Line coverage: 21.3%
+  Covered lines: 168
+  Uncovered lines: 618
+  Coverable lines: 786
+  Total lines: 1263
+  Branch coverage: 6.1% (15 of 242)
+  Covered branches: 15
+  Total branches: 242
+  Method coverage: 38.8% (26 of 67)
+  Full method coverage: 37.3% (25 of 67)
+  Covered methods: 26
+  Fully covered methods: 25
+  Total methods: 67
+
+Demo.Api                                                                         8.2%
+  Demo.Api.Features.Inventory.ProductsController                                   0%
+  Demo.Api.Middleware.ExceptionHandlingMiddleware                               18.7%
+  Microsoft.AspNetCore.OpenApi.Generated                                           0%
+  Program                                                                       88.8%
+  System.Runtime.CompilerServices                                                  0%
+
+Demo.Application                                                                  81%
+  Demo.Application.Features.ExchangeRates.SyncExchangeRatesJob                   100%
+  Demo.Application.Features.Inventory.InventoryModule                           69.3%
+  Demo.Application.Features.Inventory.ProductDto                                 100%
+
+Demo.Domain                                                                     87.5%
+  Demo.Domain.Features.ExchangeRates.ExchangeRate                                 75%
+  Demo.Domain.Features.Inventory.Product                                         100%
+
+Demo.Infrastructure                                                               25%
+  Demo.Infrastructure.Data.DemoDbContext                                         100%
+  Demo.Infrastructure.Data.Migrations.DemoDbContextModelSnapshot                   0%
+  Demo.Infrastructure.Data.Migrations.InitialCreate                                0%
+  Demo.Infrastructure.DatabaseSeeder                                             100%
+  Demo.Infrastructure.Features.ExchangeRates.ExchangeRateRepository              100%
+  Demo.Infrastructure.Features.ExchangeRates.Models.OpenExchangeRatesResponse      0%
+  Demo.Infrastructure.Features.ExchangeRates.OpenExchangeRatesClient               0%
+  Demo.Infrastructure.Features.Inventory.ProductRepository                         0%
+  Demo.Infrastructure.HangfireSetup                                              100%

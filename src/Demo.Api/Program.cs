@@ -1,8 +1,4 @@
 using Demo.Api.Middleware;
-using Demo.Application.Modules;
-using Demo.Domain.Modules.Inventory;
-using Demo.Infrastructure;
-using Demo.Infrastructure.Persistence;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,13 +20,13 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInventoryModule, InventoryModule>();
 
 // Exchange Rates (Task 2)
-builder.Services.AddHttpClient<Demo.Domain.Modules.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Clients.OpenExchangeRatesClient>((sp, client) =>
+builder.Services.AddHttpClient<Demo.Domain.Features.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Features.ExchangeRates.OpenExchangeRatesClient>((sp, client) =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
     var baseUrl = config["OpenExchangeRates:BaseUrl"] ?? "https://openexchangerates.org";
     client.BaseAddress = new Uri(baseUrl);
 });
-builder.Services.AddScoped<Demo.Domain.Modules.ExchangeRates.IExchangeRateRepository, ExchangeRateRepository>();
+builder.Services.AddScoped<Demo.Domain.Features.ExchangeRates.IExchangeRateRepository, ExchangeRateRepository>();
 builder.Services.AddTransient<SyncExchangeRatesJob>();
 
 // Hangfire

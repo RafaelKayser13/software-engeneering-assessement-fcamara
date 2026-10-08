@@ -1,5 +1,3 @@
-using Demo.Domain.Modules.Inventory;
-using Demo.Infrastructure.Persistence;
 
 namespace Demo.Infrastructure;
 
@@ -20,4 +18,3 @@ public static class DatabaseSeeder
         }
     }
 }
-

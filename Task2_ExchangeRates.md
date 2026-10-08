@@ -23,4 +23,3 @@ Your task is to implement a background process that automatically fetches the la
 4. **Persistence:**
    * Design the necessary changes to store these exchange rates.
    * Save the fetched data to the SQLite database. Ensure that the latest rates are either updated and historically logged.
-
