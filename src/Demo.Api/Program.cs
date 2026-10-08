@@ -19,16 +19,26 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DemoDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// Repositories and modules — Scoped to align with the DbContext lifetime
+// Repositories and modules
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInventoryModule, InventoryModule>();
+
+// Exchange Rates (Task 2)
+builder.Services.AddHttpClient<Demo.Domain.Modules.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Clients.OpenExchangeRatesClient>((sp, client) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var baseUrl = config["OpenExchangeRates:BaseUrl"] ?? "https://openexchangerates.org";
+    client.BaseAddress = new Uri(baseUrl);
+});
+builder.Services.AddScoped<Demo.Domain.Modules.ExchangeRates.IExchangeRateRepository, ExchangeRateRepository>();
+builder.Services.AddTransient<SyncExchangeRatesJob>();
 
 // Hangfire
 builder.Services.AddInfrastructureHangfire();
 
 var app = builder.Build();
 
-// Global error handling — must be first in the pipeline
+// Global error handling
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -41,6 +51,9 @@ app.UseHttpsRedirection();
 app.UseHangfireDashboard();
 app.MapControllers();
 
+// Hangfire Jobs
+RecurringJob.AddOrUpdate<SyncExchangeRatesJob>("sync-exchange-rates", j => j.ExecuteAsync(CancellationToken.None), Cron.Weekly(DayOfWeek.Monday));
+
 // Seed
 using (var scope = app.Services.CreateScope())
 {
@@ -49,3 +62,5 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+public partial class Program { }
