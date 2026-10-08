@@ -1,0 +1,9 @@
+global using Demo.Domain.Features.ExchangeRates;
+global using Demo.Domain.Features.Inventory;
+global using Demo.Infrastructure.Features.ExchangeRates;
+global using Demo.Infrastructure.Features.Inventory;
+global using Demo.Infrastructure.Data;
+global using FluentAssertions;
+global using Xunit;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Data.Sqlite;

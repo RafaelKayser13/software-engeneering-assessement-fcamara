@@ -1,5 +1,3 @@
-using Demo.Domain.Modules.Inventory;
-using Demo.Infrastructure.Persistence;
 
 namespace Demo.Infrastructure;
 
@@ -7,7 +5,7 @@ public static class DatabaseSeeder
 {
     public static async Task SeedAsync(DemoDbContext db)
     {
-        await db.Database.EnsureCreatedAsync();
+        await db.Database.MigrateAsync();
 
         if (!db.Products.Any())
         {
@@ -20,4 +18,3 @@ public static class DatabaseSeeder
         }
     }
 }
-

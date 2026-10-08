@@ -18,4 +18,3 @@ Your task is to create or extend an API endpoint that retrieves the entire produ
    * If **no currency** is specified, the endpoint should return the product prices in their base currency (**USD**).
    * If a **supported currency** (EUR, CAD, GBP, or CHF) is specified, the endpoint should calculate and return the price converted to that currency using the *latest available exchange rate* from the database.
    * Ensure the returned JSON payload clearly indicates the currency of the price (e.g., `{ "sku": "...", "price": 95.50, "currency": "EUR" }`).
-

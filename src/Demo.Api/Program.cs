@@ -1,16 +1,13 @@
 using Demo.Api.Middleware;
-using Demo.Application.Modules;
-using Demo.Domain.Modules.Inventory;
-using Demo.Infrastructure;
-using Demo.Infrastructure.Persistence;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 // Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -21,16 +18,16 @@ builder.Services.AddDbContext<DemoDbContext>(options =>
 
 // Repositories and modules
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IInventoryModule, InventoryModule>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 // Exchange Rates (Task 2)
-builder.Services.AddHttpClient<Demo.Domain.Modules.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Clients.OpenExchangeRatesClient>((sp, client) =>
+builder.Services.AddHttpClient<Demo.Domain.Features.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Features.ExchangeRates.OpenExchangeRatesClient>((sp, client) =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
     var baseUrl = config["OpenExchangeRates:BaseUrl"] ?? "https://openexchangerates.org";
     client.BaseAddress = new Uri(baseUrl);
 });
-builder.Services.AddScoped<Demo.Domain.Modules.ExchangeRates.IExchangeRateRepository, ExchangeRateRepository>();
+builder.Services.AddScoped<Demo.Domain.Features.ExchangeRates.IExchangeRateRepository, ExchangeRateRepository>();
 builder.Services.AddTransient<SyncExchangeRatesJob>();
 
 // Hangfire
@@ -43,8 +40,12 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => 
+    {
+        options.WithTitle("FCamara Tech Assessment API");
+        options.WithTheme(ScalarTheme.DeepSpace);
+    });
 }
 
 app.UseHttpsRedirection();
