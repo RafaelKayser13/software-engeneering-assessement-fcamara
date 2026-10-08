@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DemoDbContext>(options =>
 
 // Repositories and modules
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IInventoryModule, InventoryModule>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 // Exchange Rates (Task 2)
 builder.Services.AddHttpClient<Demo.Domain.Features.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Features.ExchangeRates.OpenExchangeRatesClient>((sp, client) =>

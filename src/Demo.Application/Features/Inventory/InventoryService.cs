@@ -2,14 +2,14 @@
 
 namespace Demo.Application.Features.Inventory
 {
-    public class InventoryModule : IInventoryModule
+    public class InventoryService : IInventoryService
     {
-        private readonly ILogger<InventoryModule> _logger;
+        private readonly ILogger<InventoryService> _logger;
         private readonly IProductRepository _productRepository;
         private readonly IExchangeRateRepository _exchangeRateRepository;
 
-        public InventoryModule(
-            ILogger<InventoryModule> logger,
+        public InventoryService(
+            ILogger<InventoryService> logger,
             IProductRepository productRepository,
             IExchangeRateRepository exchangeRateRepository
         )

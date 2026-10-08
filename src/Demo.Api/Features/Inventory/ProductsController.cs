@@ -7,11 +7,11 @@ namespace Demo.Api.Features.Inventory;
 [Tags("Product Catalog")]
 public class ProductsController : ControllerBase
 {
-    private readonly IInventoryModule _inventoryModule;
+    private readonly IInventoryService _InventoryService;
 
-    public ProductsController(IInventoryModule inventoryModule)
+    public ProductsController(IInventoryService InventoryService)
     {
-        _inventoryModule = inventoryModule;
+        _InventoryService = InventoryService;
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var products = await _inventoryModule.GetAllProductsAsync(currency, cancellationToken);
+            var products = await _InventoryService.GetAllProductsAsync(currency, cancellationToken);
             return Ok(products);
         }
         catch (ArgumentException ex)
@@ -47,7 +47,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct(string sku, CancellationToken cancellationToken)
     {
-        var product = await _inventoryModule.GetProduct(sku, cancellationToken);
+        var product = await _InventoryService.GetProduct(sku, cancellationToken);
 
         if (product is null)
             return NotFound(new { error = $"Product with SKU '{sku}' was not found." });

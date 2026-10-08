@@ -2,19 +2,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Demo.UnitTests.Modules;
 
-public class InventoryModuleTests
+public class InventoryServiceTests
 {
-    private readonly Mock<ILogger<InventoryModule>> _loggerMock;
+    private readonly Mock<ILogger<InventoryService>> _loggerMock;
     private readonly Mock<IProductRepository> _productRepoMock;
     private readonly Mock<IExchangeRateRepository> _exchangeRepoMock;
-    private readonly InventoryModule _sut;
+    private readonly InventoryService _sut;
 
-    public InventoryModuleTests()
+    public InventoryServiceTests()
     {
-        _loggerMock = new Mock<ILogger<InventoryModule>>();
+        _loggerMock = new Mock<ILogger<InventoryService>>();
         _productRepoMock = new Mock<IProductRepository>();
         _exchangeRepoMock = new Mock<IExchangeRateRepository>();
-        _sut = new InventoryModule(_loggerMock.Object, _productRepoMock.Object, _exchangeRepoMock.Object);
+        _sut = new InventoryService(_loggerMock.Object, _productRepoMock.Object, _exchangeRepoMock.Object);
     }
 
     [Fact]
