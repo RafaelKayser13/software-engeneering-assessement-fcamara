@@ -1,7 +1,7 @@
-﻿namespace Demo.Domain.Modules.Inventory
+namespace Demo.Domain.Modules.Inventory
 {
     public interface IProductRepository
     {
-        Task<Product> GetProduct(string sku);
+        Task<Product?> GetProduct(string sku, CancellationToken cancellationToken = default);
     }
 }
