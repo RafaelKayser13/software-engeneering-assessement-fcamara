@@ -1,12 +1,13 @@
 using Demo.Api.Middleware;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 // Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -39,8 +40,12 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => 
+    {
+        options.WithTitle("FCamara Tech Assessment API");
+        options.WithTheme(ScalarTheme.DeepSpace);
+    });
 }
 
 app.UseHttpsRedirection();
