@@ -9,7 +9,6 @@ public class DemoDbContext : DbContext
 
     public DemoDbContext(DbContextOptions<DemoDbContext> options) : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,7 +17,10 @@ public class DemoDbContext : DbContext
 
         modelBuilder.Entity<Product>(b =>
         {
-            b.HasKey(p => p.Sku);
+            b.HasKey(p => p.Id);
+            b.Property(p => p.Id).ValueGeneratedOnAdd();
+            b.HasIndex(p => p.Sku).IsUnique();
+            b.Property(p => p.Sku).IsRequired().HasMaxLength(50);
             b.Property(p => p.Name).IsRequired().HasMaxLength(200);
             b.Property(p => p.Price).HasColumnType("decimal(18,2)");
         });

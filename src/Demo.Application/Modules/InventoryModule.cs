@@ -1,16 +1,11 @@
-﻿using Demo.Domain.Modules.Inventory;
+using Demo.Domain.Modules.Inventory;
 using Microsoft.Extensions.Logging;
 
 namespace Demo.Application.Modules
 {
-    public interface IInventoryModule
-    {
-        Task<Product> GetProduct(string sku);
-    }
-
     public class InventoryModule : IInventoryModule
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<InventoryModule> _logger;
         private readonly IProductRepository _productRepository;
 
         public InventoryModule(
@@ -22,9 +17,9 @@ namespace Demo.Application.Modules
             _productRepository = productRepository;
         }
 
-        public Task<Product> GetProduct(string sku)
+        public Task<Product?> GetProduct(string sku, CancellationToken cancellationToken = default)
         {
-            return _productRepository.GetProduct(sku);
+            return _productRepository.GetProduct(sku, cancellationToken);
         }
     }
 }

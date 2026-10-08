@@ -1,36 +1,36 @@
+using Demo.Api.Middleware;
 using Demo.Application.Modules;
-using Demo.Domain.Common.Services;
 using Demo.Domain.Modules.Inventory;
 using Demo.Infrastructure;
-using Demo.Infrastructure.Messaging;
 using Demo.Infrastructure.Persistence;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Setup Database
+// Database
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+
 builder.Services.AddDbContext<DemoDbContext>(options =>
-    options.UseSqlite("Data Source=demo.db"));
+    options.UseSqlite(connectionString));
 
-// Setup Repositories and Infra
-builder.Services.AddTransient<IProductRepository, ProductRepository>();
-builder.Services.AddTransient<IMessagePublisher, FakeMessagePublisher>();
+// Repositories and modules — Scoped to align with the DbContext lifetime
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IInventoryModule, InventoryModule>();
 
-// Setup Modules
-builder.Services.AddTransient<IInventoryModule, InventoryModule>();
-
-// Setup Hangfire via Infrastructure
+// Hangfire
 builder.Services.AddInfrastructureHangfire();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Global error handling — must be first in the pipeline
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -38,40 +38,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Add Hangfire Dashboard
 app.UseHangfireDashboard();
-
 app.MapControllers();
 
-// Seed Database for Testing
+// Seed
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DemoDbContext>();
-    db.Database.EnsureCreated();
-
-    if (!db.Products.Any())
-    {
-        db.Products.Add(
-            new Product()
-            {
-                Sku = "SKU1",
-                Name = "Name",
-                Price = 103.30M
-            }
-        );
-
-        db.Products.Add(
-            new Product()
-            {
-                Sku = "SKU2",
-                Name = "Name",
-                Price = 102.20M
-            }
-        );
-
-        db.SaveChanges();
-    }
+    await DatabaseSeeder.SeedAsync(db);
 }
 
 app.Run();
