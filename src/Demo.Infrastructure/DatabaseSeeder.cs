@@ -5,7 +5,7 @@ public static class DatabaseSeeder
 {
     public static async Task SeedAsync(DemoDbContext db)
     {
-        await db.Database.EnsureCreatedAsync();
+        await db.Database.MigrateAsync();
 
         if (!db.Products.Any())
         {
