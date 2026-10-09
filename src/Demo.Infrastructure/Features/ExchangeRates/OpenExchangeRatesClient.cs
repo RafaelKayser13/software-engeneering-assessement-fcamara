@@ -26,9 +26,9 @@ public class OpenExchangeRatesClient : IExchangeRateApiClient
         {
             url += $"&symbols={string.Join(",", _symbols)}";
         }
-        
+
         var response = await _httpClient.GetFromJsonAsync<OpenExchangeRatesResponse>(url, cancellationToken);
-        
+
         return response?.Rates ?? new Dictionary<string, decimal>();
     }
 }

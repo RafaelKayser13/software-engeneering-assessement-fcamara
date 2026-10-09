@@ -29,10 +29,10 @@ public class ProductRepositoryTests
         await context.SaveChangesAsync();
 
         var repo = new ProductRepository(context);
-        
+
         // Act
         var products = await repo.GetAllProductsAsync();
-        
+
         // Assert
         products.Should().HaveCount(2);
     }
@@ -50,10 +50,10 @@ public class ProductRepositoryTests
         await context.SaveChangesAsync();
 
         var repo = new ProductRepository(context);
-        
+
         // Act
         var product = await repo.GetProduct("SKU1");
-        
+
         // Assert
         product.Should().NotBeNull();
         product!.Sku.Should().Be("SKU1");

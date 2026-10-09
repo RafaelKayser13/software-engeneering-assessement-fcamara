@@ -21,7 +21,7 @@ public class SyncExchangeRatesJob
     {
         _logger.LogInformation("Starting Exchange Rates Sync Job...");
         var rates = await _apiClient.GetLatestRatesAsync(cancellationToken);
-        
+
         if (!rates.Any())
         {
             _logger.LogWarning("No rates retrieved from the API.");

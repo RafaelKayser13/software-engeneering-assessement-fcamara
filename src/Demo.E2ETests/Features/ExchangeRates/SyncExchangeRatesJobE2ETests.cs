@@ -28,7 +28,7 @@ public class SyncExchangeRatesJobE2ETests : IClassFixture<WebApplicationFactory<
                 // Remove real DB and replace with test in-memory SQLite DB
                 services.RemoveAll(typeof(DbContextOptions<DemoDbContext>));
                 services.AddDbContext<DemoDbContext>(options => options.UseSqlite(connection));
-                
+
                 // Swap external API client with a stub to avoid hitting real network in E2E
                 services.RemoveAll(typeof(IExchangeRateApiClient));
                 services.AddScoped<IExchangeRateApiClient, StubApiClient>();
