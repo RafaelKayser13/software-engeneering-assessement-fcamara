@@ -21,7 +21,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 // Exchange Rates (Task 2)
-builder.Services.AddHttpClient<Demo.Domain.Features.ExchangeRates.IExchangeRateApiClient, Demo.Infrastructure.Features.ExchangeRates.OpenExchangeRatesClient>((sp, client) =>
+builder.Services.AddHttpClient<IExchangeRateApiClient, OpenExchangeRatesClient>((sp, client) =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
     var baseUrl = config["OpenExchangeRates:BaseUrl"] ?? "https://openexchangerates.org";
@@ -41,7 +41,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options => 
+    app.MapScalarApiReference(options =>
     {
         options.WithTitle("FCamara Tech Assessment API");
         options.WithTheme(ScalarTheme.DeepSpace);

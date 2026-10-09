@@ -23,7 +23,7 @@ namespace Demo.Application.Features.Inventory
         {
             _logger.LogInformation("Getting all products. Target currency: {Currency}", currency ?? "USD");
             var products = await _productRepository.GetAllProductsAsync(cancellationToken);
-            
+
             decimal multiplier = 1m;
             string targetCurrency = "USD";
 
